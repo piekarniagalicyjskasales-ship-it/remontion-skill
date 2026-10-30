@@ -1,0 +1,40 @@
+# Creative toolkit for Galicia bakery
+
+Everything installed and learned in the Claude session of 2026-10-30, kept here because cloud containers are wiped after each session.
+
+## Restore in a new session
+
+```bash
+bash toolkit/setup.sh
+```
+
+The skills in `.claude/skills/` also load automatically when this repo is opened in Claude Code.
+
+## Skills
+
+| Skill | Source | Purpose |
+|---|---|---|
+| `agent-browser` | [vercel-labs/agent-browser](https://github.com/vercel-labs/agent-browser) | Browser automation CLI. The SKILL.md is a stub, run `agent-browser skills get core` for the real guide |
+| `remotion-motion-graphics` | this repo | Code-driven motion graphics with Remotion |
+| `higgsfield-product-ads` | written in this session | Ad photos and videos from a packshot via the Higgsfield connector |
+| `openmontage` | written in this session | Bootstrap and use OpenMontage for full video production |
+
+## Research notes
+
+**wide-trace/open-higgsfield** is a Next.js studio over the Higgsfield platform API with 38 models: 8 image, 30 video (Soul, Seedance 2/2.5, Kling 3, Wan, Flux, LTX, MiniMax, PixVerse, Grok). It generates nothing locally, needs a Higgsfield `id:secret` key plus the API base URL, and its Vercel Blob upload route is unauthenticated.
+
+**Recommended repos** for image and video generation, checked 2026-10-30:
+
+| Repo | Stars | License | Note |
+|---|---|---|---|
+| calesthio/OpenMontage | 73k | AGPL-3.0 | Agentic video production, no GPU needed, supports Higgsfield |
+| heygen-com/hyperframes | 76k | Apache-2.0 | HTML to MP4 renderer, no AI generation |
+| Comfy-Org/ComfyUI | 144k | GPL-3.0 | Local image and video models, needs GPU |
+| Wan-Video/Wan2.2 | 18k | Apache-2.0 | Open video model, 24 GB+ VRAM |
+| Lightricks/LTX-Video | 11k | Apache-2.0 | Open video model |
+
+Cloud sessions have no GPU (4 CPU, 15 GB RAM), so generation goes through hosted APIs.
+
+## Generated assets
+
+`generated/galicrisp-3-ziarna-ad-4x5.jpg`: GaliCrisp 3 ziarna i sól morska, 4:5 ad, Higgsfield `marketing_studio_image` at 2k, 2 credits. The small text on the two round badges came out distorted, so retouch or regenerate before print.
