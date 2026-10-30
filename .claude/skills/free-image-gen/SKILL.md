@@ -45,6 +45,10 @@ What it does:
 3. Places the real pack with a contact shadow and a soft drop shadow.
 4. Adds the headline and a brand-red pill with the subline.
 
+Tall formats such as Stories automatically keep text and pack out of the top and bottom ~15 % that the platform UI covers.
+
+For video, add `--save-layers DIR`. It writes `background.png`, `product.png` and `extra-N.png`, which a Remotion composition can animate. See `promo/galicrisp-stories`. Re-run with `--bg-image DIR/background.png --bg-ready` to recompose in seconds without regenerating the scene.
+
 Useful flags: `--size 1080x1920` for Stories, `--size 1920x1080` for banners, `--bg-image scene.png` to reuse a background, `--save-bg` to keep one, `--extras none` to hide badges, `--accent "#C8102E"` for the pill colour, `--pack-height 0.6`.
 
 ## 4. Check before delivering

@@ -10,6 +10,8 @@ Options worth knowing:
   --size 1080x1350        output size (4:5 feed). 1080x1920 for Stories.
   --bg-prompt "..."       scene description, keep the centre empty
   --bg-image scene.png    reuse an existing background instead of generating
+  --bg-ready              the --bg-image is already graded, e.g. from --save-layers
+  --save-layers DIR       write background, product and badges as separate PNGs for video
   --extras badges         also place the other cut-out objects (badges) beside the pack
   --seed 7                change the generated scene
 """
@@ -89,8 +91,14 @@ def cut_objects(packshot: Path):
     return objects
 
 
-def make_background(size, prompt, seed, bg_image):
+def make_background(size, prompt, seed, bg_image, ready=False):
     w, h = size
+    if bg_image and ready:
+        bg = Image.open(bg_image).convert("RGB")
+        scale = max(w / bg.width, h / bg.height)
+        bg = bg.resize((round(bg.width * scale), round(bg.height * scale)), Image.LANCZOS)
+        left, top = (bg.width - w) // 2, (bg.height - h) // 2
+        return bg.crop((left, top, left + w, top + h))
     if bg_image:
         bg = Image.open(bg_image).convert("RGB")
     else:
@@ -148,10 +156,18 @@ def place_with_shadow(canvas, obj, x, y):
     canvas.alpha_composite(obj, (x, y))
 
 
+def safe_zone(w, h):
+    """Top text start and pack bottom. Tall formats (Stories, Reels) keep
+    clear of the platform UI at the top and bottom ~12% of the frame."""
+    if h / w > 1.5:
+        return int(h * 0.15), 0.83
+    return int(h * 0.055), 0.92
+
+
 def draw_text(canvas, headline, subline, color, accent):
     w, h = canvas.size
     d = ImageDraw.Draw(canvas)
-    y = int(h * 0.055)
+    y = safe_zone(w, h)[0]
     if headline:
         size = int(w * 0.095)
         f = font("bold", size)
@@ -184,6 +200,7 @@ def main():
     ap.add_argument("--size", default="1080x1350")
     ap.add_argument("--bg-prompt", default=DEFAULT_BG)
     ap.add_argument("--bg-image")
+    ap.add_argument("--bg-ready", action="store_true", help="--bg-image is already graded (e.g. a saved layer); only crop it")
     ap.add_argument("--seed", type=int, default=3)
     ap.add_argument("--headline", default="")
     ap.add_argument("--subline", default="")
@@ -192,6 +209,7 @@ def main():
     ap.add_argument("--pack-height", type=float, default=0.58, help="pack height as share of canvas")
     ap.add_argument("--extras", choices=["none", "badges"], default="badges")
     ap.add_argument("--save-bg", help="also save the generated background here for reuse")
+    ap.add_argument("--save-layers", help="directory for separate layers (background.png, product.png, extra-N.png) for animation")
     a = ap.parse_args()
 
     t0 = time.time()
@@ -199,14 +217,21 @@ def main():
     objects = cut_objects(Path(a.packshot))
     product, extras = objects[0], objects[1:]
 
-    bg = make_background((w, h), a.bg_prompt, a.seed, a.bg_image)
+    bg = make_background((w, h), a.bg_prompt, a.seed, a.bg_image, a.bg_ready)
     if a.save_bg:
         bg.save(a.save_bg)
+    if a.save_layers:
+        layers = Path(a.save_layers)
+        layers.mkdir(parents=True, exist_ok=True)
+        bg.save(layers / "background.png")
+        product.save(layers / "product.png")
+        for i, ex in enumerate(extras, 1):
+            ex.save(layers / f"extra-{i}.png")
     canvas = bg.convert("RGBA")
 
     pack = scale_sharp(product, h * a.pack_height)
     px = (w - pack.width) // 2
-    py = int(h * 0.92) - pack.height
+    py = int(h * safe_zone(w, h)[1]) - pack.height
     place_with_shadow(canvas, pack, px, py)
 
     if a.extras == "badges" and extras:

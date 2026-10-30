@@ -38,6 +38,8 @@ Cloud sessions have no GPU (4 CPU, 15 GB RAM). Hosted APIs or the small local mo
 
 ## Generated assets
 
+`generated/galicrisp-3-ziarna-stories-9x16.jpg` and `generated/galicrisp-3-ziarna-story-5s.mp4`: Stories still and a 5 s animated Story with synthesized sound. Fully local and free. Source project in `promo/galicrisp-stories`.
+
 `generated/galicrisp-3-ziarna-ad-free-local-4x5.jpg`: same product made with `free-image-gen`, fully local, no cost. The pack and badges are the original pixels, so all printed text is exact. The scene comes from LCM Dreamshaper v7.
 
 `generated/galicrisp-3-ziarna-ad-4x5.jpg`: GaliCrisp 3 ziarna i sól morska, 4:5 ad, Higgsfield `marketing_studio_image` at 2k, 2 credits. The small text on the two round badges came out distorted, so retouch or regenerate before print.
