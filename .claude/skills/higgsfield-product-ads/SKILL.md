@@ -18,6 +18,16 @@ Workflow that worked for the GaliCrisp "3 ziarna i sól morska" packshot.
    - Video from the finished still: `generate_video` (Seedance, Kling). Check cost first, video is much more expensive.
 5. **Wait and show.** `jobs_wait` with `timeout_seconds <= 15`, repeat until terminal, then download the result URL into `generated/` in this repo.
 
+## Alternative without Higgsfield: Canva
+
+Use this when the user does not want Higgsfield or has no credits.
+
+1. `create-upload-url`, then `curl -X POST -H "Content-Type: application/octet-stream" --data-binary @<file> '<uploadUrl>'`. The response holds `mediaId`.
+2. `generate-image` with the same prompt, `imageReferences: [{"type": "MEDIA", "id": "<mediaId>"}]` and an aspect enum such as `PORTRAIT_4_5`.
+3. Poll `get-generate-image-job` until `SUCCESS`, then give the user the "Open generated image" link and save the file to `generated/`.
+
+Figma `generate_image` takes no reference image, so it cannot reproduce the real pack. Use it only for backgrounds.
+
 ## Prompt template
 
 Keep the packaging exact. Always say it explicitly:
