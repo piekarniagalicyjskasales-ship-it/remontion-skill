@@ -18,6 +18,7 @@ The skills in `.claude/skills/` also load automatically when this repo is opened
 | `remotion-motion-graphics` | this repo | Code-driven motion graphics with Remotion |
 | `higgsfield-product-ads` | written in this session | Ad photos and videos from a packshot via the Higgsfield connector |
 | `openmontage` | written in this session | Bootstrap and use OpenMontage for full video production |
+| `free-image-gen` | written in this session | Free local image generation on CPU, no keys or accounts. Product ads keep the real pack pixels |
 
 ## Research notes
 
@@ -33,8 +34,10 @@ The skills in `.claude/skills/` also load automatically when this repo is opened
 | Wan-Video/Wan2.2 | 18k | Apache-2.0 | Open video model, 24 GB+ VRAM |
 | Lightricks/LTX-Video | 11k | Apache-2.0 | Open video model |
 
-Cloud sessions have no GPU (4 CPU, 15 GB RAM), so generation goes through hosted APIs.
+Cloud sessions have no GPU (4 CPU, 15 GB RAM). Hosted APIs or the small local model in `free-image-gen` are the options. Pollinations still answered without a key on 2026-10-30, but its docs now require sign-up, so it is not used.
 
 ## Generated assets
+
+`generated/galicrisp-3-ziarna-ad-free-local-4x5.jpg`: same product made with `free-image-gen`, fully local, no cost. The pack and badges are the original pixels, so all printed text is exact. The scene comes from LCM Dreamshaper v7.
 
 `generated/galicrisp-3-ziarna-ad-4x5.jpg`: GaliCrisp 3 ziarna i sól morska, 4:5 ad, Higgsfield `marketing_studio_image` at 2k, 2 credits. The small text on the two round badges came out distorted, so retouch or regenerate before print.

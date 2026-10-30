@@ -20,6 +20,9 @@ if ! command -v agent-browser >/dev/null 2>&1; then
 fi
 agent-browser install
 
+echo "==> Setting up free local image generation (no keys, no accounts)"
+bash "$REPO_DIR/.claude/skills/free-image-gen/scripts/setup.sh"
+
 if [ "${SKIP_OPENMONTAGE:-0}" != "1" ]; then
   OM_DIR="${OPENMONTAGE_DIR:-$HOME/OpenMontage}"
   echo "==> Installing OpenMontage into $OM_DIR"
